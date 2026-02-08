@@ -1,0 +1,32 @@
+# Raven Proxy Scraper - Requirements
+# Installation: pip install -r requirements.txt
+
+# Core dependencies
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Optional dependencies (for extended functionality)
+# colorama>=0.4.6          # Cross-platform colored terminal text
+# tqdm>=4.66.0            # Progress bars
+# geoip2>=4.7.0           # IP geolocation (optional)
+# pandas>=2.0.0           # Data analysis (optional)
+# openpyxl>=3.1.2         # Excel export (optional)
+
+# Development dependencies (for contributors)
+# pytest>=7.4.0           # Testing framework
+# pytest-cov>=4.1.0       # Coverage reporting
+# flake8>=6.0.0           # Code linting
+# black>=23.0.0           # Code formatting
+# mypy>=1.0.0             # Type checking
+# build>=0.10.0           # Package building
+
+# Platform-specific dependencies
+# Windows only (if needed)
+# pywin32>=306            # Windows API (optional)
+
+# Linux only (if needed)
+# python3-xlib>=0.15      # X11 automation (optional)
+
+# Proxy validation enhancements
+# aiohttp>=3.9.0         # Async HTTP requests (optional, for performance)
+# asyncio>=3.4.3         # Async I/O (included in Python 3.7+)
