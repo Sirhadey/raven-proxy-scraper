@@ -38,8 +38,10 @@ BANNER = """
 
 [+] Fast as a Raven, Deadly as a Scavenger
 [+] Scraping decaying proxies since 2024
-[+] github.com/Sirhadey/raven-proxy-scraper
-[+] twitter.com/adphily
+[+] https://github.com/Sirhadey/raven-proxy-scraper
+[+] https://twitter.com/adphily
+[+] https://tiktok.com/adphily
+[+] https://instagram.com/adphily
 """
 
 class ProxyScraper:
