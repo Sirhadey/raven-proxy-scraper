@@ -1,2 +1,378 @@
-# raven-proxy-scraper
-Raven Proxy Scraper is a high-performance, multi-threaded proxy harvesting tool designed for security professionals, penetration testers, and privacy enthusiasts. 
+
+# 🦅 Raven Proxy Scraper
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.8+-blue.svg" alt="Python">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License">
+  <img src="https://img.shields.io/badge/Version-1.0.0-red.svg" alt="Version">
+  <img src="https://img.shields.io/github/stars/sirhadey/raven-proxy-scraper?style=social" alt="Stars">
+</p>
+
+<p align="center">
+  <strong>High-speed proxy harvesting tool for security professionals</strong><br>
+  <em>Fast as a Raven, Deadly as a Scavenger</em>
+</p>
+
+## 📖 Overview
+
+**Raven Proxy Scraper** is a sophisticated, multi-threaded tool designed to harvest and validate proxies from multiple public sources. Built for penetration testers, security researchers, and privacy enthusiasts, it efficiently scrapes proxies from decaying internet sources and delivers clean, validated lists ready for immediate use with Proxychains.
+
+> *"Gathering proxies from the digital decay since 2024"*
+
+## ✨ Features
+
+✅ **Multi-source scraping** - Aggregates from dozens of public proxy sources  
+✅ **Intelligent validation** - Tests connectivity and measures response times  
+✅ **Proxychains-ready output** - Generates properly formatted configuration files  
+✅ **Threaded performance** - Parallel scraping and validation for speed  
+✅ **Extensible architecture** - Easy to add new proxy sources  
+✅ **MSF-style interface** - Familiar CLI for security professionals  
+✅ **Duplicate removal** - Clean, unique proxy lists  
+✅ **User-agent rotation** - Avoids blocking and detection  
+✅ **Multiple output formats** - TXT, JSON, and Proxychains config  
+✅ **Configurable via files** - Customize without touching code  
+
+## 🚀 Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- pip package manager
+
+### Clone & Setup
+```bash
+# Clone repository
+git clone https://github.com/sirhadey/raven-proxy-scraper.git
+cd raven-proxy-scraper
+
+# Install dependencies
+pip3 install -r requirements.txt
+
+# Make executable
+chmod +x raven_scraper.py
+```
+
+### Dependencies
+```txt
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+```
+
+## ⚡ Quick Start
+
+```bash
+# Basic usage (scrape + validate)
+python3 raven_scraper.py
+
+# Fast mode (no validation)
+python3 raven_scraper.py --no-validate
+
+# Use with Proxychains immediately
+proxychains -f proxychains.conf curl http://ifconfig.me
+```
+
+## 📖 Usage
+
+### Command-line Options
+```bash
+python3 raven_scraper.py [OPTIONS]
+
+Options:
+  -h, --help            Show help message
+  -c, --config FILE     Configuration file (default: raven.conf)
+  --no-validate         Skip proxy validation (much faster)
+  --add-sites FILE      Add custom sites from text file
+  --list-sites          List all configured scraping sites
+  --test-url URL        Custom URL for proxy validation
+  -o, --output FILE     Custom output file for Proxychains config
+  -v, --verbose         Verbose output
+```
+
+### Examples
+```bash
+# Basic scrape with validation
+python3 raven_scraper.py
+
+# Fast reconnaissance (no validation)
+python3 raven_scraper.py --no-validate
+
+# Add custom proxy sources
+python3 raven_scraper.py --add-sites my_sites.txt
+
+# Custom validation test
+python3 raven_scraper.py --test-url "http://ifconfig.me"
+
+# List all configured sources
+python3 raven_scraper.py --list-sites
+
+# Custom output filename
+python3 raven_scraper.py -o my_proxychains.conf
+```
+
+## ⚙️ Configuration
+
+### Default Configuration (`raven.conf`)
+```ini
+[sites]
+urls = 
+    https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks5&timeout=10000
+    https://www.proxy-list.download/api/v1/get?type=socks5
+    https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt
+    https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt
+    https://spys.one/en/socks-proxy-list/
+    https://www.socks-proxy.net/
+    https://free-proxy-list.net/
+    https://www.sslproxies.org/
+    https://hidemy.name/en/proxy-list/
+timeout = 10
+max_workers = 20
+
+[output]
+proxychains_file = proxychains.conf
+raw_file = proxies.txt
+json_file = proxies.json
+
+[validation]
+test_url = http://httpbin.org/ip
+timeout = 5
+max_validation_workers = 50
+```
+
+### Adding Custom Sites
+Create `custom_sites.txt`:
+```txt
+# Add your custom proxy sources (one per line)
+https://api.proxyscrape.com/v2/?request=getproxies&protocol=socks4
+https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt
+https://www.proxy-list.download/api/v1/get?type=http
+http://proxydb.net/__data/proxy-list.json
+```
+
+Then run:
+```bash
+python3 raven_scraper.py --add-sites custom_sites.txt
+```
+
+## 📁 Output Formats
+
+### 1. **Proxychains Configuration** (`proxychains.conf`)
+```conf
+# Proxychains configuration file
+# Generated by RavenProxyScraper
+# Generated on: 2024-01-15T14:30:00.123456
+
+[ProxyList]
+# add proxy here ...
+# meanwhile
+# defaults set to "tor"
+
+socks5 45.77.56.113 1080 # 1.23s
+socks5 138.197.157.44 1080 # 0.87s
+socks5 167.99.123.123 1080 # 2.11s
+socks4 192.241.145.92 4145 # 1.56s
+```
+
+### 2. **Raw Proxy List** (`proxies.txt`)
+```txt
+45.77.56.113:1080
+138.197.157.44:1080
+167.99.123.123:1080
+192.241.145.92:4145
+```
+
+### 3. **Detailed JSON** (`proxies.json`)
+```json
+{
+  "total_found": 5421,
+  "valid": 3124,
+  "generated_at": "2024-01-15T14:30:00.123456",
+  "proxies": [
+    {
+      "ip": "45.77.56.113",
+      "port": "1080",
+      "type": "socks5",
+      "response_time": 1.23,
+      "country": "Unknown",
+      "validated_at": "2024-01-15T14:30:00.123456"
+    }
+  ]
+}
+```
+
+## 🔗 Integration
+
+### With Proxychains
+```bash
+# Direct usage
+proxychains -f proxychains.conf nmap -sT -Pn target.com
+
+# Replace system config
+sudo cp proxychains.conf /etc/proxychains.conf
+proxychains firefox
+
+# Use with specific tool
+proxychains -f proxychains.conf sqlmap -u "http://target.com"
+```
+
+### Automation
+```bash
+# Daily proxy refresh (crontab)
+0 2 * * * cd /opt/raven-proxy-scraper && python3 raven_scraper.py --no-validate
+
+# Pipeline with other tools
+python3 raven_scraper.py --no-validate | grep "socks5" > socks5_only.txt
+```
+
+## 🏗️ Architecture
+
+```
+raven_scraper.py
+├── ProxyScraper Class
+│   ├── Site Scrapers
+│   │   ├── ProxyScrape API
+│   │   ├── Spys.one Parser
+│   │   ├── Free-Proxy-List Extractor
+│   │   └── Raw Text Parser
+│   ├── Threaded Validation Engine
+│   ├── Configuration Manager
+│   └── Output Formatters
+├── Command-line Interface
+└── Configuration System
+```
+
+### Supported Sites
+- ✅ ProxyScrape.com (API)
+- ✅ Proxy-List.download
+- ✅ Spys.one
+- ✅ Socks-Proxy.net
+- ✅ Free-Proxy-List.net
+- ✅ SSLProxies.org
+- ✅ HideMy.name
+- ✅ GitHub Raw Lists
+- ✅ Custom Sources
+
+## 🎯 Use Cases
+
+### 🔍 **Penetration Testing**
+```bash
+# Rotate IPs during reconnaissance
+proxychains -f proxychains.conf nmap -sS -Pn --proxies target.com
+
+# Bypass rate limiting
+proxychains -f proxychains.conf ffuf -w wordlist.txt -u https://target.com/FUZZ
+```
+
+### 🌐 **Web Scraping**
+```bash
+# Avoid IP bans
+proxychains -f proxychains.conf python3 scraper.py
+```
+
+### 🛡️ **Privacy Protection**
+```bash
+# Anonymous browsing
+proxychains -f proxychains.conf firefox
+```
+
+### 📊 **Security Research**
+- Analyze proxy network distributions
+- Study proxy geographical patterns
+- Monitor proxy availability over time
+
+## ⚠️ Legal Notice
+
+**IMPORTANT**: This tool is for **legitimate security testing and research only**.
+
+### ✅ Permitted Uses
+- Testing your own systems
+- Authorized penetration tests
+- Academic research
+- Security education
+
+### ❌ Prohibited Uses
+- Unauthorized system access
+- Bypassing paid services
+- Illegal activities
+- Harassment or abuse
+- Copyright infringement
+
+**By using this tool, you agree to:**
+1. Only test systems you own or have explicit permission to test
+2. Respect website terms of service and robots.txt
+3. Comply with all applicable laws and regulations
+4. Accept full responsibility for your actions
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how:
+
+1. **Fork** the repository
+2. **Clone** your fork:
+   ```bash
+   git clone https://github.com/YOUR-USERNAME/raven-proxy-scraper.git
+   ```
+3. **Create** a feature branch:
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+4. **Commit** your changes:
+   ```bash
+   git commit -m 'Add amazing feature'
+   ```
+5. **Push** to your branch:
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+6. **Open** a Pull Request
+
+### Contribution Areas
+- New proxy source scrapers
+- Performance improvements
+- Additional output formats
+- Documentation updates
+- Bug fixes
+
+## 👨‍💻 Author
+
+**sirhadey**  
+Security Researcher & Tool Developer  
+
+[![GitHub](https://img.shields.io/badge/GitHub-sirhadey-black?style=for-the-badge&logo=github)](https://github.com/sirhadey)  
+*"Building tools that make security research more efficient"*
+
+## 📄 License
+
+MIT License
+
+Copyright (c) 2024 sirhadey
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## 🌟 Support
+
+If you find this tool useful:
+- ⭐ Star the repository
+- 🐛 Report issues
+- 💡 Suggest features
+- 🔗 Share with colleagues
+
+**Like a raven in flight - silent, swift, and effective.** 🦅
+
+---
+*Raven Proxy Scraper - Gathering proxies from the digital decay since 2024*
+```
