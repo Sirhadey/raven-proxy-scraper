@@ -308,7 +308,7 @@ We welcome contributions! Here's how:
 1. **Fork** the repository
 2. **Clone** your fork:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/raven-proxy-scraper.git
+   git clone https://github.com/Sirhadey/raven-proxy-scraper.git
    ```
 3. **Create** a feature branch:
    ```bash
